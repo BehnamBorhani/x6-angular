@@ -3,19 +3,22 @@ import {
   Component,
   ElementRef,
   Injector,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import { Graph } from '@antv/x6';
 import { register } from '@antv/x6-angular-shape';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { CustomNodeComponent } from 'src/app/components/custom-node/custom-node.component';
+import { Node } from 'src/app/models/node.interface';
+import { NodeService } from 'src/app/services/node.service';
 
 @Component({
   selector: 'app-welcome',
   templateUrl: './welcome.component.html',
   styleUrls: ['./welcome.component.scss'],
 })
-export class WelcomeComponent implements AfterViewInit {
+export class WelcomeComponent implements OnInit, AfterViewInit {
   public graph!: Graph;
   @ViewChild('container') containerElemRef!: ElementRef<HTMLDivElement>;
 
@@ -55,7 +58,15 @@ export class WelcomeComponent implements AfterViewInit {
     ],
   };
 
-  constructor(private injector: Injector) {}
+  constructor(private injector: Injector, private nodeService: NodeService) {}
+
+  ngOnInit(): void {
+    this.data.nodes = this.nodeService.getNodes;
+    this.nodeService.nodeChanged.subscribe((nodes: Node[]) => {
+      this.data.nodes = nodes;
+      this.graph.addNodes(nodes);
+    });
+  }
 
   ngAfterViewInit() {
     this.graph = new Graph({
@@ -92,5 +103,7 @@ export class WelcomeComponent implements AfterViewInit {
         enabled: true,
       })
     );
+
+    this.graph.addNodes(this.nodeService.nodes);
   }
 }
