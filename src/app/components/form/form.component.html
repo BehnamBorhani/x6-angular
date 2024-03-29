@@ -1,0 +1,90 @@
+<form
+  nz-form
+  [nzLayout]="'inline'"
+  [formGroup]="validateForm"
+  (ngSubmit)="onCreateNode()"
+>
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your label!">
+      <nz-input-group nzPrefixIcon="user">
+        <input formControlName="label" nz-input placeholder="Label" />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your width!">
+      <nz-input-group nzPrefixIcon="lock">
+        <label for="">Width: </label>
+        <input
+          formControlName="width"
+          nz-input
+          type="number"
+          placeholder="width"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your height!">
+      <nz-input-group nzPrefixIcon="lock">
+        <label for="">Height: </label>
+        <input
+          formControlName="height"
+          nz-input
+          type="number"
+          placeholder="height"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please select node Shape">
+      <!-- <nz-input-group nzPrefixIcon="lock"> -->
+      <nz-select ngModel="rect" formControlName="shape">
+        <nz-option nzValue="rect" nzLabel="Rectangle"></nz-option>
+        <nz-option nzValue="ellipse" nzLabel="Ellipse"></nz-option>
+        <nz-option nzValue="circle" nzLabel="Circle"></nz-option>
+      </nz-select>
+      <!-- </nz-input-group> -->
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your coordinate X!">
+      <nz-input-group nzPrefixIcon="lock">
+        <label for="">coordinateX: </label>
+        <input
+          formControlName="coordinateX"
+          nz-input
+          type="number"
+          placeholder="coordinate X"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control nzErrorTip="Please input your coordinate Y!">
+      <nz-input-group nzPrefixIcon="lock">
+        <label for="">coordinateY: </label>
+        <input
+          formControlName="coordinateY"
+          nz-input
+          type="number"
+          placeholder="coordinate Y"
+        />
+      </nz-input-group>
+    </nz-form-control>
+  </nz-form-item>
+
+  <nz-form-item>
+    <nz-form-control>
+      <button nz-button nzType="primary" [disabled]="!validateForm.valid">
+        Create Node
+      </button>
+    </nz-form-control>
+  </nz-form-item>
+</form>
