@@ -20,15 +20,13 @@ export class FormComponent {
     shape: FormControl<string>;
     coordinateX: FormControl<number>;
     coordinateY: FormControl<number>;
-    id: FormControl<`${string}-${string}-${string}-${string}-${string}`>;
   }> = this.fb.group({
     label: ['', [Validators.required]],
     width: [0, [Validators.required]],
     height: [0, [Validators.required]],
-    shape: ['', [Validators.required]],
+    shape: ['rect', [Validators.required]],
     coordinateX: [0, [Validators.required]],
     coordinateY: [0, [Validators.required]],
-    id: [crypto.randomUUID(), [Validators.required]],
   });
 
   constructor(
@@ -38,15 +36,17 @@ export class FormComponent {
 
   onCreateNode() {
     console.log('submit', this.validateForm.value);
-    let randomId = crypto.randomUUID();
+    const { shape, coordinateX, coordinateY, width, height, label } =
+      this.validateForm.value;
+
     this.nodeService.createNode({
-      id: randomId,
-      shape: 'rect',
-      x: 220,
-      y: 220,
-      width: 100,
-      height: 50,
-      label: 'New Node',
+      id: crypto.randomUUID(),
+      x: coordinateX as number,
+      y: coordinateY as number,
+      shape: shape as string,
+      width: width as number,
+      height: height as number,
+      label: label as string,
     });
   }
 }
