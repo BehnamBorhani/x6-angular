@@ -13,7 +13,7 @@ export class NodeService {
       id: 'node1',
       shape: 'ellipse',
       x: -100,
-      y: -100,
+      y: 100,
       width: 80,
       height: 40,
       label: 'hello',
@@ -21,7 +21,7 @@ export class NodeService {
     {
       id: 'node2',
       shape: 'rect',
-      x: 100,
+      x: 300,
       y: 100,
       width: 80,
       height: 40,

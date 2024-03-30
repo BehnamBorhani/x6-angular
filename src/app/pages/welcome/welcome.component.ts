@@ -6,8 +6,9 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { Graph } from '@antv/x6';
+import { Cell, Graph, Markup, Model } from '@antv/x6';
 import { register } from '@antv/x6-angular-shape';
+import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { CustomNodeComponent } from 'src/app/components/custom-node/custom-node.component';
 import { Node } from 'src/app/models/node.interface';
@@ -77,16 +78,39 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
         color: '#F2F7FA',
       },
       grid: true,
-      panning: {
+      onEdgeLabelRendered: (args) => {
+        const { selectors } = args;
+        console.log(selectors);
+        const content = selectors['foContent'] as HTMLDivElement;
+        if (content) {
+          const btn = document.createElement('button');
+          btn.appendChild(document.createTextNode('HTML Button'));
+          btn.style.width = '100%';
+          btn.style.height = '100%';
+          btn.style.lineHeight = '1';
+          btn.style.borderRadius = '4px';
+          btn.style.textAlign = 'center';
+          btn.style.color = '#000';
+          btn.style.background = '#ffd591';
+          btn.style.border = '2px solid #ffa940';
+
+          btn.addEventListener('click', () => {
+            alert('clicked');
+          });
+          content.appendChild(btn);
+          return undefined;
+        }
+      },
+      /* panning: {
         enabled: true,
         // modifiers: 'shift',
         eventTypes: ['leftMouseDown', 'rightMouseDown', 'mouseWheel'],
-      },
-      autoResize: true,
+      }, */
+      // autoResize: true,
     });
 
     // this.graph.isPannable();
-    this.graph.enablePanning();
+    // this.graph.enablePanning();
     // this.graph.disablePanning()
     // this.graph.togglePanning();
 
@@ -103,7 +127,46 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
         enabled: true,
       })
     );
+    this.graph.use(
+      new Selection({
+        enabled: true,
+        multiple: true,
+        rubberband: true,
+        movable: true,
+        showNodeSelectionBox: true,
+      })
+    );
+
+    this.graph.on(
+      'node:selected',
+      (args: { cell: Cell; options: Model.SetOptions; node: Node }) => {
+        console.log(args.node);
+      }
+    );
 
     this.graph.addNodes(this.nodeService.nodes);
+    this.graph.addEdge({
+      source: 'node1',
+      target: 'node2',
+      defaultLabel: {
+        markup: Markup.getForeignObjectMarkup(),
+        attrs: {
+          fo: {
+            width: 120,
+            height: 30,
+            x: -60,
+            y: -15,
+          },
+        },
+      },
+      label: {
+        position: 0.5,
+      },
+      attrs: {
+        line: {
+          stroke: '#ccc',
+        },
+      },
+    });
   }
 }
