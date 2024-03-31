@@ -10,6 +10,7 @@ import { Cell, Graph, Markup, Model } from '@antv/x6';
 import { register } from '@antv/x6-angular-shape';
 import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
+import { Transform } from '@antv/x6-plugin-transform';
 import { CustomNodeComponent } from 'src/app/components/custom-node/custom-node.component';
 import { Node } from 'src/app/models/node.interface';
 import { NodeService } from 'src/app/services/node.service';
@@ -141,6 +142,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
         enabled: true,
       })
     );
+
     this.graph.use(
       new Selection({
         enabled: true,
@@ -148,6 +150,25 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
         rubberband: true,
         movable: true,
         showNodeSelectionBox: true,
+      })
+    );
+
+    this.graph.use(
+      new Transform({
+        resizing: {
+          enabled: true,
+          /* minWidth: 1,
+          maxWidth: 200,
+          minHeight: 1,
+          maxHeight: 150, */
+          orthogonal: true,
+          restrict: false,
+          preserveAspectRatio: false,
+        },
+        rotating: {
+          enabled: true,
+          grid: 15,
+        },
       })
     );
 
