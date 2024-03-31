@@ -6,4 +6,7 @@ export interface Node {
   width: number;
   height: number;
   label: string;
+  data?: {
+    ngArguments: {};
+  };
 }

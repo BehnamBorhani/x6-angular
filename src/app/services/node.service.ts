@@ -11,12 +11,17 @@ export class NodeService {
   public nodes: Node[] = [
     {
       id: 'node1',
-      shape: 'ellipse',
+      shape: 'custom-node',
       x: -100,
       y: 100,
       width: 80,
       height: 40,
       label: 'hello',
+      data: {
+        ngArguments: {
+          value: "Test"
+        }
+      }
     },
     {
       id: 'node2',
@@ -36,6 +41,17 @@ export class NodeService {
   constructor() {}
 
   createNode(newNode: Node) {
+    if (newNode.shape === 'custom-node') {
+      newNode = {
+        ...newNode,
+        data: {
+          // Input parameters must be placed here
+          ngArguments: {
+            value: newNode.label,
+          },
+        },
+      };
+    }
     this.nodes.push(newNode);
     this.nodeChanged.next(this.nodes.slice());
   }

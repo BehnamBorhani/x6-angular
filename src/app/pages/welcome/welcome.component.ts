@@ -55,6 +55,12 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
             stroke: 'red',
           },
         },
+        router: {
+          name: 'manhattan',
+          args: {
+            side: 'right',
+          },
+        },
       },
     ],
   };
@@ -106,7 +112,15 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
         // modifiers: 'shift',
         eventTypes: ['leftMouseDown', 'rightMouseDown', 'mouseWheel'],
       }, */
-      // autoResize: true,
+      autoResize: true,
+    });
+
+    register({
+      shape: 'custom-node',
+      content: CustomNodeComponent,
+      injector: this.injector,
+      width: 120,
+      height: 20,
     });
 
     // this.graph.isPannable();
@@ -144,29 +158,42 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       }
     );
 
-    this.graph.addNodes(this.nodeService.nodes);
-    this.graph.addEdge({
-      source: 'node1',
-      target: 'node2',
-      defaultLabel: {
-        markup: Markup.getForeignObjectMarkup(),
-        attrs: {
-          fo: {
-            width: 120,
-            height: 30,
-            x: -60,
-            y: -15,
+    this.graph.addNodes([
+      ...this.nodeService.nodes,
+      {
+        shape: 'custom-node',
+        x: 100,
+        y: 100,
+        data: {
+          // Input parameters must be placed here
+          ngArguments: {
+            value: 'Oh my god',
           },
         },
       },
-      label: {
-        position: 0.5,
-      },
-      attrs: {
-        line: {
-          stroke: '#ccc',
-        },
-      },
-    });
+    ]);
+    // this.graph.addEdge({
+    //   source: 'node1',
+    //   target: 'node2',
+    //   defaultLabel: {
+    //     markup: Markup.getForeignObjectMarkup(),
+    //     attrs: {
+    //       fo: {
+    //         width: 120,
+    //         height: 30,
+    //         x: -60,
+    //         y: -15,
+    //       },
+    //     },
+    //   },
+    //   label: {
+    //     position: 0.5,
+    //   },
+    //   attrs: {
+    //     line: {
+    //       stroke: '#ccc',
+    //     },
+    //   },
+    // });
   }
 }
