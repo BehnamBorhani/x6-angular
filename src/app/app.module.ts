@@ -18,6 +18,7 @@ import { FormComponent } from './components/form/form.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
+import { NzGridModule } from 'ng-zorro-antd/grid';
 
 registerLocaleData(en);
 
@@ -37,6 +38,7 @@ registerLocaleData(en);
     ReactiveFormsModule,
     NzSelectModule,
     NzInputModule,
+    NzGridModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],
