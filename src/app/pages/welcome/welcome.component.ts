@@ -124,6 +124,46 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
         eventTypes: ['leftMouseDown', 'rightMouseDown', 'mouseWheel'],
       }, */
       autoResize: true,
+      connecting: {
+        allowBlank: false,
+        allowNode: false,
+        snap: true,
+        validateConnection({
+          sourceCell,
+          targetCell,
+          sourceMagnet,
+          targetMagnet,
+        }) {
+          // Cannot connect to itself
+          if (sourceCell === targetCell) {
+            return false;
+          }
+
+          // You can only connect from the output connection pile to the input connection pile
+          if (
+            !sourceMagnet ||
+            sourceMagnet.getAttribute('port-group') === 'input'
+          ) {
+            return false;
+          }
+
+          if (
+            !targetMagnet ||
+            targetMagnet.getAttribute('port-group') !== 'input'
+          ) {
+            return false;
+          }
+
+          // Do not connect repeatedly
+          /* const edges = this.getEdges();
+          const portId = targetMagnet.getAttribute('port');
+          if (edges.find((edge) => edge.getTargetPortId() === portId)) {
+            return false;
+          } */
+
+          return true;
+        },
+      },
     });
 
     register({
@@ -213,6 +253,38 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       height: 40,
       label: 'rect',
       attrs: this.commonAttrs,
+      ports: {
+        groups: {
+          input: {
+            attrs: {
+              circle: {
+                r: 6,
+                magnet: 'passive',
+                stroke: '#31d0c6',
+                fill: '#fff',
+                strokeWidth: 2,
+              },
+            },
+            position: 'left',
+          },
+          output: {
+            attrs: {
+              circle: {
+                r: 6,
+                magnet: true,
+                stroke: '#990000',
+                fill: '#fff',
+                strokeWidth: 2,
+              },
+            },
+            position: 'right',
+          },
+        },
+        items: [
+          { id: 'input-port', group: 'input' },
+          { id: 'output-port', group: 'output' },
+        ],
+      },
     });
 
     const n2 = this.graph.createNode({
@@ -233,6 +305,38 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       height: 40,
       label: 'ellipse',
       attrs: this.commonAttrs,
+      ports: {
+        groups: {
+          input: {
+            attrs: {
+              circle: {
+                r: 6,
+                magnet: true,
+                stroke: '#31d0c6',
+                fill: '#fff',
+                strokeWidth: 2,
+              },
+            },
+            position: 'left',
+          },
+          output: {
+            attrs: {
+              circle: {
+                r: 6,
+                magnet: true,
+                stroke: '#990000',
+                fill: '#fff',
+                strokeWidth: 2,
+              },
+            },
+            position: 'right',
+          },
+        },
+        items: [
+          { id: 'input-port', group: 'input' },
+          { id: 'output-port', group: 'output' },
+        ],
+      },
     });
 
     const n4 = this.graph.createNode({
