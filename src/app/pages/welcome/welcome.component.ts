@@ -164,6 +164,30 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
           return true;
         },
       },
+      highlighting: {
+        // Render a bounding box around the connection pile when it can be connected
+        magnetAvailable: {
+          name: 'stroke',
+          args: {
+            attrs: {
+              fill: '#fff',
+              stroke: '#ff00ff',
+              strokeWidth: 6,
+            },
+          },
+        },
+        // Render a bounding box around the connection pile when the connection pile is adsorbed
+        magnetAdsorbed: {
+          name: 'stroke',
+          args: {
+            attrs: {
+              fill: '#fff',
+              stroke: '#31d0c6',
+              strokeWidth: 8,
+            },
+          },
+        },
+      },
     });
 
     register({
