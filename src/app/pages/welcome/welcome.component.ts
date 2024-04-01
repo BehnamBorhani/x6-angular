@@ -13,7 +13,9 @@ import { Selection } from '@antv/x6-plugin-selection';
 import { Snapline } from '@antv/x6-plugin-snapline';
 import { Stencil } from '@antv/x6-plugin-stencil';
 import { Transform } from '@antv/x6-plugin-transform';
+import { NzDrawerService } from 'ng-zorro-antd/drawer';
 import { CustomNodeComponent } from 'src/app/components/custom-node/custom-node.component';
+import { DrawerComponent } from 'src/app/components/drawer/drawer.component';
 import { Node } from 'src/app/models/node.interface';
 import { NodeService } from 'src/app/services/node.service';
 
@@ -77,7 +79,11 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
     ],
   };
 
-  constructor(private injector: Injector, private nodeService: NodeService) {}
+  constructor(
+    private injector: Injector,
+    private nodeService: NodeService,
+    private drawerService: NzDrawerService
+  ) {}
 
   ngOnInit(): void {
     this.data.nodes = this.nodeService.getNodes;
@@ -494,6 +500,26 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
 
     this.graph.on('node:mouseleave', ({ node }) => {
       node.removeTools();
+    });
+
+    this.graph.on('node:click', ({ node }) => {
+      const drawerRef = this.drawerService.create({
+        nzTitle: 'Node details',
+        // nzFooter: 'Footer',
+        // nzExtra: 'Extra',
+        nzContent: DrawerComponent,
+        nzContentParams: {
+          value: 'Hello Node',
+        },
+      });
+
+      drawerRef.afterOpen.subscribe(() => {
+        console.log('Drawer(Template) open');
+      });
+
+      drawerRef.afterClose.subscribe(() => {
+        console.log('Drawer(Template) close');
+      });
     });
 
     this.graph.on('edge:mouseenter', ({ edge }) => {

@@ -19,11 +19,13 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzGridModule } from 'ng-zorro-antd/grid';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { DrawerComponent } from './components/drawer/drawer.component';
 
 registerLocaleData(en);
 
 @NgModule({
-  declarations: [AppComponent, FormComponent],
+  declarations: [AppComponent, FormComponent, DrawerComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -39,6 +41,7 @@ registerLocaleData(en);
     NzSelectModule,
     NzInputModule,
     NzGridModule,
+    NzDrawerModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: en_US }],
   bootstrap: [AppComponent],
