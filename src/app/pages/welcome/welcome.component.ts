@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
+import { CircularLayout, DagreLayout, GridLayout } from '@antv/layout';
 import { Cell, Graph, Markup, Model } from '@antv/x6';
 import { register } from '@antv/x6-angular-shape';
 import { Selection } from '@antv/x6-plugin-selection';
@@ -40,8 +41,8 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       {
         id: 'node1', // String，可选，节点的唯一标识
         shape: 'ellipse',
-        x: -50, // Number，必选，节点位置的 x 值
-        y: -50, // Number，必选，节点位置的 y 值
+        /* x: -50, // Number，必选，节点位置的 x 值
+        y: -50, // Number，必选，节点位置的 y 值 */
         width: 80, // Number，可选，节点大小的 width 值
         height: 40, // Number，可选，节点大小的 height 值
         label: 'hello', // String，节点标签
@@ -49,8 +50,8 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       {
         id: 'node2', // String，节点的唯一标识
         shape: 'rect',
-        x: 50, // Number，必选，节点位置的 x 值
-        y: 50, // Number，必选，节点位置的 y 值
+        /* x: 50, // Number，必选，节点位置的 x 值
+        y: 50, // Number，必选，节点位置的 y 值 */
         width: 80, // Number，可选，节点大小的 width 值
         height: 40, // Number，可选，节点大小的 height 值
         label: 'world', // String，节点标签
@@ -198,6 +199,60 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       height: 20,
     });
 
+    for (let i = 1; i <= 30; i++) {
+      this.data.nodes!.push({
+        id: `${i}`,
+        shape: 'circle',
+        width: 32,
+        height: 32,
+        /* attrs: {
+          body: {
+            fill: '#5F95FF',
+            stroke: 'transparent',
+          },
+          label: {
+            fill: '#ffffff',
+          },
+        }, */
+        label: `${i}`,
+      });
+    }
+
+    /* const gridLayout = new GridLayout({
+      type: 'grid',
+      width: this.graph.container.clientWidth,
+      height: this.graph.container.clientHeight,
+      // center: [300, 200],
+      // rows: 4,
+      // cols: 4,
+      preventOverlap: false,
+      preventOverlapPadding: 100,
+    }); */
+
+    const gridLayout = new CircularLayout({
+      type: 'circular',
+      // radius: 200,
+      clockwise: false,
+      width: this.graph.container.clientWidth,
+      height: this.graph.container.clientHeight,
+      // center: [300, 200],
+      // divisions: 5,
+      angleRatio: 3,
+      // ordering: 'degree',
+    });
+
+    /* const gridLayout = new DagreLayout({
+      type: 'dagre',
+      rankdir: 'LR',
+      align: 'UL',
+      ranksep: 30,
+      nodesep: 15,
+      controlPoints: true,
+    }); */
+
+    const newLayout = gridLayout.layout(this.data);
+    console.log(newLayout);
+
     // this.graph.isPannable();
     // this.graph.enablePanning();
     // this.graph.disablePanning()
@@ -207,9 +262,10 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
     // this.graph.zoom(0.2);
     // this.graph.zoom(-0.2);
 
-    this.graph.centerContent(); //The most common method is to align the center of the canvas content with the center of the viewport. Usage:
+    // this.graph.centerContent(); //The most common method is to align the center of the canvas content with the center of the viewport. Usage:
 
-    this.graph.fromJSON(this.data);
+    // this.graph.fromJSON(this.data);
+    this.graph.fromJSON(newLayout);
 
     this.graph.use(
       new Snapline({
@@ -271,8 +327,6 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
 
     const n1 = this.graph.createNode({
       shape: 'rect',
-      x: 40,
-      and: 40,
       width: 80,
       height: 40,
       label: 'rect',
@@ -313,8 +367,6 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
 
     const n2 = this.graph.createNode({
       shape: 'circle',
-      x: 180,
-      and: 40,
       width: 40,
       height: 40,
       label: 'circle',
@@ -323,8 +375,6 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
 
     const n3 = this.graph.createNode({
       shape: 'ellipse',
-      x: 280,
-      and: 40,
       width: 80,
       height: 40,
       label: 'ellipse',
@@ -365,8 +415,6 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
 
     const n4 = this.graph.createNode({
       shape: 'path',
-      x: 420,
-      and: 40,
       width: 40,
       height: 40,
       // https://www.svgrepo.com/svg/13653/like
