@@ -433,5 +433,29 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
     //     },
     //   },
     // });
+
+    this.graph.on('node:mouseenter', ({ node }) => {
+      console.log(node);
+      node.addTools({
+        name: 'button-remove',
+        args: {
+          offset: { x: 10, y: 10 },
+        },
+      });
+    });
+
+    this.graph.on('node:mouseleave', ({ node }) => {
+      node.removeTools();
+    });
+
+    this.graph.on('edge:mouseenter', ({ edge }) => {
+      edge.addTools({
+        name: 'button-remove',
+      });
+    });
+
+    this.graph.on('edge:mouseleave', ({ edge }) => {
+      edge.removeTools();
+    });
   }
 }
