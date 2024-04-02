@@ -224,7 +224,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       });
     }
 
-    /* const gridLayout = new GridLayout({
+    const gridLayout = new GridLayout({
       type: 'grid',
       width: this.graph.container.clientWidth,
       height: this.graph.container.clientHeight,
@@ -233,9 +233,9 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       // cols: 4,
       preventOverlap: false,
       preventOverlapPadding: 100,
-    }); */
+    });
 
-    const gridLayout = new CircularLayout({
+    const circularLayout = new CircularLayout({
       type: 'circular',
       // radius: 200,
       clockwise: false,
@@ -256,8 +256,32 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
       controlPoints: true,
     }); */
 
-    const newLayout = gridLayout.layout(this.data);
-    console.log(newLayout);
+    let newLayout = gridLayout.layout(this.data);
+    /* setTimeout(() => {
+      newLayout = circularLayout.layout(this.data);
+      newLayout.nodes?.forEach((modelNode) => {
+        let node = this.graph
+          .getNodes()
+          .find((node) => node.id === modelNode.id)!;
+
+        let deltaX,
+          deltaY = 0;
+        if ('x' in modelNode) {
+          deltaX = <number>modelNode.x - node?.getPosition().x;
+        }
+        if ('y' in modelNode) {
+          deltaY = <number>modelNode.y - node?.getPosition().y;
+        }
+
+        node.translate(deltaX, deltaY, {
+          transition: {
+            duration: 2000,
+          },
+        });
+      });
+      // this.graph.fromJSON(newLayout);
+    }, 3000); */
+    // console.log(newLayout);
 
     // this.graph.isPannable();
     // this.graph.enablePanning();
@@ -503,7 +527,29 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
     });
 
     this.graph.on('node:click', ({ node }) => {
-      const drawerRef = this.drawerService.create({
+      newLayout = circularLayout.layout(this.data);
+      newLayout.nodes?.forEach((modelNode) => {
+        let node = this.graph
+          .getNodes()
+          .find((node) => node.id === modelNode.id)!;
+
+        let deltaX,
+          deltaY = 0;
+        if ('x' in modelNode) {
+          deltaX = <number>modelNode.x - node?.getPosition().x;
+        }
+        if ('y' in modelNode) {
+          deltaY = <number>modelNode.y - node?.getPosition().y;
+        }
+
+        node.translate(deltaX, deltaY, {
+          transition: {
+            duration: 1000,
+          },
+        });
+      });
+
+      /* const drawerRef = this.drawerService.create({
         nzTitle: 'Node details',
         // nzFooter: 'Footer',
         // nzExtra: 'Extra',
@@ -519,7 +565,7 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
 
       drawerRef.afterClose.subscribe(() => {
         console.log('Drawer(Template) close');
-      });
+      }); */
     });
 
     this.graph.on('edge:mouseenter', ({ edge }) => {
