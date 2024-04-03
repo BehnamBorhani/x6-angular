@@ -527,11 +527,16 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
     });
 
     this.graph.on('node:click', ({ node }) => {
+      const nodeID = node.id;
+      const { x, y } = node.getPosition();
+      circularLayout.center = [x, y];
+      circularLayout.angleRatio = 2 * Math.floor(Math.random() * 20) + 1;
+
       newLayout = circularLayout.layout(this.data);
       newLayout.nodes?.forEach((modelNode) => {
         let node = this.graph
           .getNodes()
-          .find((node) => node.id === modelNode.id)!;
+          .find((n) => n.id !== nodeID && n.id === modelNode.id)!;
 
         let deltaX,
           deltaY = 0;
@@ -542,11 +547,13 @@ export class WelcomeComponent implements OnInit, AfterViewInit {
           deltaY = <number>modelNode.y - node?.getPosition().y;
         }
 
-        node.translate(deltaX, deltaY, {
+        node?.translate(deltaX, deltaY, {
           transition: {
             duration: 1000,
           },
         });
+
+        node?.removeTools();
       });
 
       /* const drawerRef = this.drawerService.create({
